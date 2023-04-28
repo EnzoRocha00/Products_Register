@@ -96,6 +96,4 @@ if __name__ == '__main__':
                 print('Valor inválido...')
                 
         connection.commit()   
-        Clear()
-                
-            
+        Clear()       
