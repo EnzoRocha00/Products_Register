@@ -36,18 +36,21 @@ def adicionar_Item(db):
         )
         item.clear()
     except:
-        print('Erro... Valor inválido...')
+        print('Algo deu errado... Operação cancelada...')
         
     
 # Remover item OK
 def remover_Item(db):
     listar_Estoque(db)
-    infoId = int(input('Digite o ID do item a ser removido: '))
-    for n, row in enumerate(db.execute("SELECT * FROM estoque")):
-        if (n+1) == infoId: 
-            db.execute(f'''
-                DELETE FROM estoque WHERE nome = '{row[0]}';
-            ''')
+    try:
+        infoId = int(input('Digite o ID do item a ser removido: '))
+        for n, row in enumerate(db.execute("SELECT * FROM estoque")):
+            if (n+1) == infoId: 
+                db.execute(f'''
+                    DELETE FROM estoque WHERE nome = '{row[0]}';
+                ''')
+    except:
+        print('Algo deu errado... Operação cancelada...')
 
 # Atualizar item ?
 def atualizar_Item():
@@ -71,8 +74,12 @@ def showMenu():
 5 - Realizar compra
 ''')
     print('-'*25)
-    opc = int(input('Opção: '))
-    return opc
+    try:
+        opc = int(input('Opção: '))
+        return opc
+    except: 
+        print('Algo deu errado... Digite uma opção válida')
+        return 999
 
 if __name__ == '__main__':
     os.system('cls')
@@ -100,7 +107,7 @@ if __name__ == '__main__':
             case 3:
                 remover_Item(cursor)
             case _ :
-                print('Valor inválido...')
+                pass
                 
         connection.commit()   
         Clear()       
