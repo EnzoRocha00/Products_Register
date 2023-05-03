@@ -9,15 +9,15 @@ def Clear():
 # Listar estoque OK
 def listar_Estoque(db):
     cont=0
-    for aux in db.execute("SELECT * FROM estoque"):
+    for _ in db.execute("SELECT * FROM estoque"):
         cont+=1
     if cont != 0:
         print('Estoque'.center(25))
         print('------------------------')
         print('id   nome   qtd   preço')
         print('------------------------')
-        for row in db.execute("SELECT * FROM estoque ORDER BY id"):
-            print(str(row[0])+'    '+str(row[1])+'   '+str(row[2])+'   '+str(f'{row[3]:.2f}'))
+        for n, row in enumerate(db.execute("SELECT * FROM estoque ORDER BY nome")):
+            print(str(n+1)+'    '+str(row[0])+'   '+str(row[1])+'   '+str(f'{row[2]:.2f}'))
         print('------------------------')
     else:
         print('------------------------')
@@ -26,11 +26,11 @@ def listar_Estoque(db):
              
 # Adicionar item OK
 def adicionar_Item(db):
-    item = [int(input('ID: ')), str(input('Nome: ')), int(input('Quantidade: ')), float(input('Preço: '))]
+    item = [str(input('Nome: ')), int(input('Quantidade: ')), float(input('Preço: '))]
     db.execute(
         f'''
             INSERT INTO estoque VALUES
-                ({item[0]}, '{item[1]}', {item[2]}, {item[3]})
+                ('{item[0]}', {item[1]}, {item[2]})
         '''
     )
     item.clear()
@@ -39,9 +39,12 @@ def adicionar_Item(db):
 def remover_Item(db):
     listar_Estoque(db)
     infoId = int(input('Digite o ID do item a ser removido: '))
-    db.execute(f'''
-    DELETE FROM estoque WHERE id = {infoId};
-    ''')
+    for n, row in enumerate(db.execute("SELECT * FROM estoque ORDER BY nome")):
+        if (n+1) == infoId: 
+            db.execute(f'''
+                DELETE FROM estoque WHERE nome = '{row[0]}';
+            ''')
+    
 
 # Atualizar item ?
 def atualizar_Item():
@@ -76,7 +79,7 @@ if __name__ == '__main__':
     exist = cursor.execute("SELECT name FROM sqlite_master WHERE name='estoque'")
 
     if exist.fetchone() is None:
-        cursor.execute("CREATE TABLE estoque(id, nome, quantidade, preco)")
+        cursor.execute("CREATE TABLE estoque(nome, quantidade, preco)")
         
     connection.commit()
     while run:
