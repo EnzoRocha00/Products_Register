@@ -44,7 +44,6 @@ def remover_Item(db):
             db.execute(f'''
                 DELETE FROM estoque WHERE nome = '{row[0]}';
             ''')
-    
 
 # Atualizar item ?
 def atualizar_Item():
@@ -65,7 +64,8 @@ def showMenu():
 2 - Adicionar item
 3 - Remover item
 4 - Atualizar item
-5 - Realizar compra''')
+5 - Realizar compra
+''')
     print('-'*25)
     opc = int(input('Opção: '))
     return opc
