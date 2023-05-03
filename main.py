@@ -26,14 +26,18 @@ def listar_Estoque(db):
              
 # Adicionar item OK
 def adicionar_Item(db):
-    item = [str(input('Nome: ')), int(input('Quantidade: ')), float(input('Preço: '))]
-    db.execute(
+    try: 
+        item = [str(input('Nome: ')), int(input('Quantidade: ')), float(input('Preço: '))]
+        db.execute(
         f'''
             INSERT INTO estoque VALUES
                 ('{item[0]}', {item[1]}, {item[2]})
         '''
-    )
-    item.clear()
+        )
+        item.clear()
+    except:
+        print('Erro... Valor inválido...')
+        
     
 # Remover item OK
 def remover_Item(db):
