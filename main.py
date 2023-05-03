@@ -16,7 +16,7 @@ def listar_Estoque(db):
         print('------------------------')
         print('id   nome   qtd   preço')
         print('------------------------')
-        for n, row in enumerate(db.execute("SELECT * FROM estoque ORDER BY nome")):
+        for n, row in enumerate(db.execute("SELECT * FROM estoque")):
             print(str(n+1)+'    '+str(row[0])+'   '+str(row[1])+'   '+str(f'{row[2]:.2f}'))
         print('------------------------')
     else:
@@ -39,7 +39,7 @@ def adicionar_Item(db):
 def remover_Item(db):
     listar_Estoque(db)
     infoId = int(input('Digite o ID do item a ser removido: '))
-    for n, row in enumerate(db.execute("SELECT * FROM estoque ORDER BY nome")):
+    for n, row in enumerate(db.execute("SELECT * FROM estoque")):
         if (n+1) == infoId: 
             db.execute(f'''
                 DELETE FROM estoque WHERE nome = '{row[0]}';
