@@ -2,6 +2,7 @@ import sqlite3
 import os
 
 # Implementar o id estatico
+# Implementar o estoque baixo
 
 # Limpar tela OK
 def Clear():
