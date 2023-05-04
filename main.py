@@ -58,7 +58,7 @@ def atualizar_Item(db):
         infoId = int(input('Digite o ID do item a ser editado: '))
         for n, row in enumerate(db.execute("SELECT * FROM estoque")):
             if (n+1) == infoId: 
-                print('1 - Nome\n2 - Quantidade\n 3 - Preço\n')
+                print('1 - Nome\n2 - Quantidade\n3 - Preço\n')
                 opcChange = int(input('Digite: '))
                 if opcChange == 1:
                     new = str(input('Novo nome: '))
@@ -81,9 +81,34 @@ def atualizar_Item(db):
         print('Algo deu errado...')
 
 # Realizar compra ?
-def realizar_Compra():
-    return True
-
+def realizar_Compra(db):
+    total = float(0)
+    more = True
+    while more:
+        listar_Estoque(db)
+        infoId = int(input('Digite o ID do item a ser comprado: '))
+        for n, row in enumerate(db.execute("SELECT * FROM estoque")):
+            if (n+1) == infoId and row[1] > 0:
+                total += row[2]
+                new = row[1] - 1
+                db.execute(f'''
+                    UPDATE estoque SET quantidade = {new} WHERE nome = '{row[0]}'
+                ''')
+            elif row[1] <= 0:
+                print('Impossivel comprar... Estoque esgotado...')
+                more = False
+                break
+            else:
+                continue
+            
+        r = int(input('Deseja comprar mais? \n1 - Sim\n2 - Não\nDigite: '))
+        if r == 1:
+            continue
+        else:
+            more = False
+            break
+    return total
+                
 # Mostra menu OK
 def showMenu():
     print('-'*25)
@@ -95,8 +120,7 @@ def showMenu():
 2 - Adicionar item
 3 - Remover item
 4 - Atualizar item
-5 - Realizar compra
-''')
+5 - Realizar compra''')
     print('-'*25)
     try:
         opc = int(input('Opção: '))
@@ -132,6 +156,8 @@ if __name__ == '__main__':
                 remover_Item(cursor)
             case 4:
                 atualizar_Item(cursor)
+            case 5:
+                print(f'Total da compra: R${realizar_Compra(cursor):.2f}')    
             case _ :
                 pass
                 
