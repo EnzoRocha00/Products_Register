@@ -37,8 +37,7 @@ def adicionar_Item(db):
         item.clear()
     except:
         print('Algo deu errado... Operação cancelada...')
-        
-    
+         
 # Remover item OK
 def remover_Item(db):
     listar_Estoque(db)
@@ -52,9 +51,34 @@ def remover_Item(db):
     except:
         print('Algo deu errado... Operação cancelada...')
 
-# Atualizar item ?
-def atualizar_Item():
-    return True
+# Atualizar item OK
+def atualizar_Item(db):
+    listar_Estoque(db)
+    try:
+        infoId = int(input('Digite o ID do item a ser editado: '))
+        for n, row in enumerate(db.execute("SELECT * FROM estoque")):
+            if (n+1) == infoId: 
+                print('1 - Nome\n2 - Quantidade\n 3 - Preço\n')
+                opcChange = int(input('Digite: '))
+                if opcChange == 1:
+                    new = str(input('Novo nome: '))
+                    db.execute(f'''
+                        UPDATE estoque SET nome = '{new}' WHERE nome = '{row[0]}'
+                    ''')
+                elif opcChange == 2:
+                    new = int(input('Nova quantidade: '))
+                    db.execute(f'''
+                        UPDATE estoque SET quantidade = {new} WHERE nome = '{row[0]}'
+                    ''')
+                elif opcChange == 3:
+                    new = float(input('Novo preço: '))
+                    db.execute(f'''
+                        UPDATE estoque SET preco = {new} WHERE nome = '{row[0]}'
+                    ''')
+                else:
+                    pass
+    except:
+        print('Algo deu errado...')
 
 # Realizar compra ?
 def realizar_Compra():
@@ -106,6 +130,8 @@ if __name__ == '__main__':
                 adicionar_Item(cursor)  
             case 3:
                 remover_Item(cursor)
+            case 4:
+                atualizar_Item(cursor)
             case _ :
                 pass
                 
