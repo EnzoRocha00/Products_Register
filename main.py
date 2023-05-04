@@ -3,6 +3,7 @@ import os
 
 # Implementar o id estatico
 # Implementar o estoque baixo
+# Inciar com alguns itens
 
 # Limpar tela OK
 def Clear():
