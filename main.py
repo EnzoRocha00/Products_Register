@@ -1,6 +1,8 @@
 import sqlite3
 import os
 
+# Implementar o id estatico
+
 # Limpar tela OK
 def Clear():
     input('Digite qualquer tecla...')
