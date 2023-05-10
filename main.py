@@ -1,9 +1,7 @@
 import sqlite3
 import os
 
-# Implementar o id estatico
-# Implementar o estoque baixo
-# Inciar com alguns itens
+# Possue ID dinamico - exibido de forma sequencial
 
 # Limpar tela OK
 def Clear():
@@ -142,7 +140,11 @@ if __name__ == '__main__':
     exist = cursor.execute("SELECT name FROM sqlite_master WHERE name='estoque'")
 
     if exist.fetchone() is None:
-        cursor.execute("CREATE TABLE estoque(nome, quantidade, preco)")
+        cursor.execute('''CREATE TABLE estoque(nome, quantidade, preco)''')
+        cursor.execute('''INSERT INTO estoque VALUES
+                            ('Camisa', 5, 50),
+                            ('Calça', 3, 75.99),
+                            ('Chapéu', 8, 35.99)''')
         
     connection.commit()
     while run:
